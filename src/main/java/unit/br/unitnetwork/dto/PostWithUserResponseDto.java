@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import unit.br.unitnetwork.entity.User;
+
+import java.util.List;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostResponseDto {
-    private Long id;
-    private String message;
+public class PostWithUserResponseDto {
+
+    UserResponseDto user;
+    List<PostResponseDto> posts;
 }

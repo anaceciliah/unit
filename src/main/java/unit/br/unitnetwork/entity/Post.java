@@ -1,5 +1,7 @@
 package unit.br.unitnetwork.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import unit.br.unitnetwork.utils.Constants;
@@ -24,5 +26,6 @@ public class Post {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn (name= "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 }

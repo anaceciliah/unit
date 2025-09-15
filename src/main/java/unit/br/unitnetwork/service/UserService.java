@@ -108,12 +108,12 @@ public class UserService {
         return fromUser(userRepository.save(user));
     }
 
-    private User toUser(UserRequestDto user) {
+    public User toUser(UserRequestDto user) {
         return modelMapper.map(user, User.class);
 
     }
 
-    private User toUser(UserResponseDto userResponseDto) {
+    public User toUser(UserResponseDto userResponseDto) {
         return modelMapper.map(userResponseDto, User.class);
     }
 
