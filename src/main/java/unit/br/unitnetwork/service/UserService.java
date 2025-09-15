@@ -1,22 +1,30 @@
 package unit.br.unitnetwork.service;
 
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.stylesheets.LinkStyle;
 import unit.br.unitnetwork.dto.UserRequestDto;
 import unit.br.unitnetwork.dto.UserResponseDto;
 import unit.br.unitnetwork.entity.User;
 import unit.br.unitnetwork.exception.DuplicateEmailException;
 import unit.br.unitnetwork.exception.EmailNotRegisteredException;
+import unit.br.unitnetwork.exception.UserNotFound;
 import unit.br.unitnetwork.repository.UserRepository;
 import unit.br.unitnetwork.utils.Strings;
 
+import java.util.List;
+
+import static unit.br.unitnetwork.utils.Strings.EMAIL_NOT_FOUND;
+
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+
 
     public UserResponseDto register (UserRequestDto user){
         if (userRepository.existsByEmail(user.getEmail())){
@@ -30,41 +38,93 @@ public class UserService {
 
     }
 
-    private User toUser(UserRequestDto user) {
-        return User.builder()
-                .name(user.getName())
-                .email(user.getEmail())
-                .message(user.getMessage())
-                .photo(user.getPhoto())
-                .active(true)
-                .build();
-
-    }
-    private UserResponseDto fromUser(User user) {
-        return UserResponseDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .message(user.getMessage())
-                .photo(user.getPhoto())
-                .build();
-    }
-
-
     public UserResponseDto getById(Long id) {
-        var user = userRepository.getById(id);
-        return fromUser(user);
+         return fromUser(userRepository.findById(id).orElseThrow(() -> new UserNotFound(String.format(Strings.ID_NOT_FOUND, id))));
     }
 
-    public UserResponseDto editeUser(UserRequestDto user){
-        return fromUser(userRepository.save(toUser(user)));
+    public  UserResponseDto getByEmail(String email) {
+        return fromUser(userRepository.findByEmail(email).orElseThrow(() -> new EmailNotRegisteredException(String.format(EMAIL_NOT_FOUND, email))));
+    }
+
+    public List<UserResponseDto> getAll(){
+        return userRepository.findAll().stream()
+                .map(this::fromUser)
+                .toList();
+    }
+
+    public UserResponseDto editeUser(UserRequestDto user, Long id) {
+        if (user == null) {
+            throw new IllegalArgumentException("UserRequestDto não pode ser nulo");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("ID não pode ser nulo");
+        }
+
+        User existingUser = toUser(getById(id));
+
+        boolean hasChanges = false;
+
+        if (user.getName() != null) {
+            if (!user.getName().equals(existingUser.getName())) {
+                existingUser.setName(user.getName());
+                hasChanges = true;
+            }
+        }
+
+        if (user.getEmail() != null) {
+            if (!user.getEmail().equals(existingUser.getEmail())) {
+                if (userRepository.existsByEmail(user.getEmail())) {
+                    throw new IllegalArgumentException(String.format(Strings.DUPLICATE_EMAIL, user.getEmail()));
+                }
+                existingUser.setEmail(user.getEmail());
+                hasChanges = true;
+            }
+        }
+
+        if (user.getPhoto() != null) {
+            if (!user.getPhoto().equals(existingUser.getPhoto())) {
+                existingUser.setPhoto(user.getPhoto());
+                hasChanges = true;
+            }
+        }
+
+        if (user.getMessage() != null) {
+            if (!user.getMessage().equals(existingUser.getMessage())) {
+                existingUser.setMessage(user.getMessage());
+                hasChanges = true;
+            }
+        }
+
+        if (hasChanges) {
+            existingUser = userRepository.save(existingUser);
+        }
+
+        return fromUser(existingUser);
     }
 
     public UserResponseDto deleteUser(Long id){
-        var user = userRepository.getById(id);
+        User user = toUser(getById(id));
         user.setActive(false);
         return fromUser(userRepository.save(user));
     }
+
+    private User toUser(UserRequestDto user) {
+        return modelMapper.map(user, User.class);
+
+    }
+
+    private User toUser(UserResponseDto userResponseDto) {
+        return modelMapper.map(userResponseDto, User.class);
+    }
+
+    private UserResponseDto fromUser(User user) {
+        return modelMapper.map(user, UserResponseDto.class);
+    }
+
+
+
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package unit.br.unitnetwork.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +17,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
      private final UserService userService;
 
-
-    public UserController(UserRepository userRepository, UserService userService) {
-
-        this.userService = userService;
-    }
 
     @PostMapping()
     public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto user) {
@@ -37,12 +34,22 @@ public class UserController {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
-    @PutMapping()
-    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto user) {
-        return new ResponseEntity<>(userService.editeUser(user), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
-    @PutMapping("delete/{id}")
+    @GetMapping("/email")
+    public ResponseEntity<UserResponseDto> getByEmail(@RequestParam String email) {
+        return new ResponseEntity<>(userService.getByEmail(email), HttpStatus.OK);
+    }
+
+    @PutMapping()
+    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto user, @RequestParam Long id) {
+        return new ResponseEntity<>(userService.editeUser(user, id), HttpStatus.OK);
+    }
+
+    @PutMapping("/delete/{id}")
     public ResponseEntity<UserResponseDto> deleteUser (@PathVariable  long id) {
         return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
     }

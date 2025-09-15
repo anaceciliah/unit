@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import unit.br.unitnetwork.utils.Constants;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,9 +35,17 @@ public class User {
     @Column
     private boolean active;
 
+    @Column(name = "dtcreate")
+    private LocalDateTime dtCreate;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Post> posts = new HashSet<>();
 
+    @PrePersist
+    public void prePersist() {
+        this.active = true;
+        this.dtCreate = LocalDateTime.now();
+    }
 }
