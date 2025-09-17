@@ -18,6 +18,7 @@ import unit.br.unitnetwork.entity.User;
 import unit.br.unitnetwork.exception.CredenciaisInvalidasException;
 import unit.br.unitnetwork.service.TokenService;
 import unit.br.unitnetwork.service.UserService;
+import unit.br.unitnetwork.utils.Strings;
 
 import java.util.Arrays;
 
@@ -34,11 +35,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody AuthRequestDto body) {
         User user = userService.toUser(userService.getUserCompletByEmail(body.email()));
-        System.out.println(user.getPassword());
-        System.out.println(body.password());
 
         if (user == null || !passwordEncoder.matches(body.password(), user.getPassword())) {
-            throw new CredenciaisInvalidasException("Email ou senha incorretos");
+            throw new CredenciaisInvalidasException(Strings.DUPLICATE_EMAIL);
         }
 
 
@@ -97,7 +96,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
-                .maxAge(3600 * 10)
+                .maxAge(3600 * 5)
                 .sameSite("Lax")
                 .build();
 

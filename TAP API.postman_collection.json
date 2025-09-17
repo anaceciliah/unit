@@ -1,0 +1,311 @@
+{
+	"info": {
+		"_postman_id": "b02b3e93-213e-4d01-b7dc-372572cc90db",
+		"name": "TAP API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17299581"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7069/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7069/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7069/user/delete/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"user",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Felipe C\",\r\n    \"email\": \"felipe.candido@maisunifacisa.com.br\",\r\n    \"password\": \"TESTE123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7069/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7069/user/email?email=felipe.candido@maisunifacisa.com.br",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"user",
+								"email"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "felipe.candido@maisunifacisa.com.br"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Felipe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7069/user?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"message\": \"TESTE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7069/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllByUserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7069/post/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"post",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"teste update\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7069/post?postId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"post"
+							],
+							"query": [
+								{
+									"key": "postId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7069/post?postId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"post"
+							],
+							"query": [
+								{
+									"key": "postId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"felipe.candido@maisunifacisa.com.br\",\r\n    \"password\": \"TESTE123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7069/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7069",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

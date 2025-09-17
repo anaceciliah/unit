@@ -23,12 +23,6 @@ public class UserController {
      private final UserService userService;
 
 
-    @PostMapping()
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto user) {
-        return new ResponseEntity<>(userService.register(user), HttpStatus.CREATED);
-    }
-
-
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getByID(@PathVariable  long id  ) {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);

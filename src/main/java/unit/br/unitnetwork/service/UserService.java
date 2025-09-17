@@ -27,8 +27,6 @@ public class UserService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
-
-
     public UserResponseDto register (UserRequestDto user){
         if (userRepository.existsByEmail(user.getEmail())){
             throw new DuplicateEmailException(
