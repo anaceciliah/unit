@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import unit.br.unitnetwork.dto.ResponseDTO;
+import unit.br.unitnetwork.exception.CredenciaisInvalidasException;
 import unit.br.unitnetwork.exception.DuplicateEmailException;
 import unit.br.unitnetwork.exception.EmailNotRegisteredException;
 import unit.br.unitnetwork.exception.UserNotFound;
@@ -29,10 +30,18 @@ public class ApplicationAdviceController {
     }
 
     @ExceptionHandler(UserNotFound.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseDTO handleUserNotFound(UserNotFound ex) {
         String messageError = ex.getMessage();
-        return new ResponseDTO(messageError, HttpStatus.BAD_REQUEST);
+        return new ResponseDTO(messageError, HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseDTO handleUserNotFound(CredenciaisInvalidasException ex) {
+        String messageError = ex.getMessage();
+        return new ResponseDTO(messageError, HttpStatus.NOT_FOUND);
 
     }
 }

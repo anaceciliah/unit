@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserResponseDto {
+public class UserCompleteResponseDto {
 
     private Long id;
     private String name;
@@ -21,5 +21,6 @@ public class UserResponseDto {
     private String message;
     private Boolean active;
     private LocalDateTime dtCreate;
+    private String password;
 
 }

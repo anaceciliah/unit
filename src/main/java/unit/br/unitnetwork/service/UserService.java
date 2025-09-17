@@ -2,8 +2,10 @@ package unit.br.unitnetwork.service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.stylesheets.LinkStyle;
+import unit.br.unitnetwork.dto.UserCompleteResponseDto;
 import unit.br.unitnetwork.dto.UserRequestDto;
 import unit.br.unitnetwork.dto.UserResponseDto;
 import unit.br.unitnetwork.entity.User;
@@ -23,6 +25,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
 
@@ -32,7 +35,12 @@ public class UserService {
                     String.format(Strings.DUPLICATE_EMAIL, user.getEmail()));
         }
 
-        User newUser = userRepository.save(toUser(user));
+        User newUser = modelMapper.map(user, User.class);
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        User test = userRepository.save(newUser);
+        System.out.println(test.getPassword());
+
 
         return fromUser(newUser);
 
@@ -44,6 +52,10 @@ public class UserService {
 
     public  UserResponseDto getByEmail(String email) {
         return fromUser(userRepository.findByEmail(email).orElseThrow(() -> new EmailNotRegisteredException(String.format(EMAIL_NOT_FOUND, email))));
+    }
+
+    public UserCompleteResponseDto getUserCompletByEmail(String email) {
+        return userToUserCompleteDto(userRepository.findByEmail(email).orElseThrow(() -> new EmailNotRegisteredException(String.format(EMAIL_NOT_FOUND, email))));
     }
 
     public List<UserResponseDto> getAll(){
@@ -116,11 +128,16 @@ public class UserService {
     public User toUser(UserResponseDto userResponseDto) {
         return modelMapper.map(userResponseDto, User.class);
     }
+    public User toUser(UserCompleteResponseDto userCompleteResponseDto) {
+        return modelMapper.map(userCompleteResponseDto, User.class);
+    }
 
     private UserResponseDto fromUser(User user) {
         return modelMapper.map(user, UserResponseDto.class);
     }
-
+    public UserCompleteResponseDto userToUserCompleteDto(User user) {
+        return modelMapper.map(user, UserCompleteResponseDto.class);
+    }
 
 
 

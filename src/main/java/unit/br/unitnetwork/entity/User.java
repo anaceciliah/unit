@@ -35,6 +35,9 @@ public class User {
     @Column
     private boolean active;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(name = "dtcreate")
     private LocalDateTime dtCreate;
 
