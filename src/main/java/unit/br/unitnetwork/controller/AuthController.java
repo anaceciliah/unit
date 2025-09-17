@@ -37,7 +37,7 @@ public class AuthController {
         User user = userService.toUser(userService.getUserCompletByEmail(body.email()));
 
         if (user == null || !passwordEncoder.matches(body.password(), user.getPassword())) {
-            throw new CredenciaisInvalidasException(Strings.DUPLICATE_EMAIL);
+            throw new CredenciaisInvalidasException(Strings.INVALID_CREDENTIALS);
         }
 
 
