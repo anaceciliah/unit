@@ -32,7 +32,7 @@ public class PostController {
     }
 
     @PutMapping
-    public ResponseEntity<PostResponseDto> update(@RequestBody PostRequestDto post, @RequestParam Long postId) {
+    public ResponseEntity<Post> update(@RequestBody PostRequestDto post, @RequestParam Long postId) {
         return new ResponseEntity<>(postService.update(post, postId), HttpStatus.OK);
     }
 

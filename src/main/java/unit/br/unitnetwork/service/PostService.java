@@ -52,10 +52,11 @@ public class PostService {
       return modelMapper.map(postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Post não encontrado")), PostResponseDto.class);
     }
 
-    public PostResponseDto update(PostRequestDto post, Long postId) {
-        Post existingPost = postRepository.findByIdAndUserId(postId, post.getUserId()).get();
+    public Post update(PostRequestDto post, Long postId) {
+        Post existingPost = toPost(findById(postId));
+        System.out.println(existingPost.toString());
         existingPost.setMessage(post.getMessage());
-        return  fromPost(postRepository.save(existingPost));
+        return  postRepository.save(existingPost);
     }
 
     public void delete(Long postId) {
@@ -75,6 +76,7 @@ public class PostService {
     private PostResponseDto fromPost(Post post) {
         return modelMapper.map(post, PostResponseDto.class);
     }
+
 
     private PostWithUserResponseDto fromPostToDto(Post post){
         return modelMapper.map(post, PostWithUserResponseDto.class);
