@@ -53,7 +53,7 @@ public class PostService {
     }
 
     public PostResponseDto update(PostRequestDto post, Long postId) {
-        Post existingPost = toPost(findById(postId));
+        Post existingPost = postRepository.findByIdAndUserId(postId, post.getUserId()).get();
         existingPost.setMessage(post.getMessage());
         return  fromPost(postRepository.save(existingPost));
     }
