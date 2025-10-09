@@ -13,4 +13,5 @@ import unit.br.unitnetwork.entity.User;
 public class PostResponseDto {
     private Long id;
     private String message;
+    private User user;
 }
