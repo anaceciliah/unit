@@ -44,4 +44,5 @@ public class ApplicationAdviceController {
         return new ResponseDTO(messageError, HttpStatus.NOT_FOUND);
 
     }
+
 }

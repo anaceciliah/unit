@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.stylesheets.LinkStyle;
 import unit.br.unitnetwork.dto.UserCompleteResponseDto;
 import unit.br.unitnetwork.dto.UserRequestDto;
@@ -26,8 +27,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final FileService fileService;
 
-    public UserResponseDto register (UserRequestDto user){
+    public UserResponseDto register (UserRequestDto user, MultipartFile photo) {
         if (userRepository.existsByEmail(user.getEmail())){
             throw new DuplicateEmailException(
                     String.format(Strings.DUPLICATE_EMAIL, user.getEmail()));
@@ -35,8 +37,11 @@ public class UserService {
 
         User newUser = modelMapper.map(user, User.class);
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        String filename = fileService.saveFile(photo);
+        newUser.setPhoto(filename);
 
         User test = userRepository.save(newUser);
+
         System.out.println(test.getPassword());
 
 
