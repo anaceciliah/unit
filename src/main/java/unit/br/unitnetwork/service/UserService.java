@@ -5,7 +5,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.stylesheets.LinkStyle;
 import unit.br.unitnetwork.dto.UserCompleteResponseDto;
 import unit.br.unitnetwork.dto.UserRequestDto;
 import unit.br.unitnetwork.dto.UserResponseDto;
@@ -35,16 +34,11 @@ public class UserService {
                     String.format(Strings.DUPLICATE_EMAIL, user.getEmail()));
         }
 
-        User newUser = modelMapper.map(user, User.class);
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+       var userToSave = toUser(user);
         String filename = fileService.saveFile(photo);
-        newUser.setPhoto(filename);
+        userToSave.setPhoto(filename);
 
-        User test = userRepository.save(newUser);
-
-        System.out.println(test.getPassword());
-
-
+        User newUser = userRepository.save(userToSave);
         return fromUser(newUser);
 
     }

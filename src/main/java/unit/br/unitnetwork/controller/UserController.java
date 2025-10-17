@@ -4,18 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import unit.br.unitnetwork.dto.UserFriendRequestDto;
 import unit.br.unitnetwork.dto.UserFriendResponseDto;
 import unit.br.unitnetwork.dto.UserRequestDto;
 import unit.br.unitnetwork.dto.UserResponseDto;
-import unit.br.unitnetwork.entity.User;
-import unit.br.unitnetwork.exception.EmailNotRegisteredException;
-import unit.br.unitnetwork.repository.UserRepository;
 import unit.br.unitnetwork.service.UserFriendService;
 import unit.br.unitnetwork.service.UserService;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -59,7 +56,11 @@ public class UserController {
     }
 
     @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<UserResponseDto>
+    public ResponseEntity<UserResponseDto> register (
+            @RequestPart("user") UserRequestDto user,
+            @RequestPart(value = "photo", required = false)MultipartFile photo){
+        return new ResponseEntity<>(userService.register(user), HttpStatus.CREATED);
+    }
 
 
 
