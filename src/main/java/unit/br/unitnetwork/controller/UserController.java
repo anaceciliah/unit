@@ -59,7 +59,7 @@ public class UserController {
     public ResponseEntity<UserResponseDto> register (
             @RequestPart("user") UserRequestDto user,
             @RequestPart(value = "photo", required = false)MultipartFile photo){
-        return new ResponseEntity<>(userService.register(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.register(user,photo), HttpStatus.CREATED);
     }
 
 

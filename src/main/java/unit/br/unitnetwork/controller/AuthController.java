@@ -10,6 +10,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import unit.br.unitnetwork.dto.AuthRequestDto;
 import unit.br.unitnetwork.dto.AuthResponseDto;
 import unit.br.unitnetwork.dto.UserRequestDto;
@@ -45,8 +46,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDto> register(@RequestBody UserRequestDto body){
-        return new ResponseEntity<>(userService.register(body), HttpStatus.CREATED);
+    public ResponseEntity<UserResponseDto> register(@RequestBody UserRequestDto body, MultipartFile photo){
+        return new ResponseEntity<>(userService.register(body,photo), HttpStatus.CREATED);
     }
 
     @GetMapping("/validate-token")
