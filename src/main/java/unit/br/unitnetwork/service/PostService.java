@@ -1,7 +1,9 @@
 package unit.br.unitnetwork.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import unit.br.unitnetwork.dto.PostRequestDto;
 import unit.br.unitnetwork.dto.PostResponseDto;
@@ -80,5 +82,24 @@ public class PostService {
 
     private PostWithUserResponseDto fromPostToDto(Post post){
         return modelMapper.map(post, PostWithUserResponseDto.class);
+    }
+}
+@Cacheable(cacheNames = {"postCache" }, key = "userId" )
+public List<PostResponseDto> findAllByUserId(Long userId) {
+
+    simulateBackEndCall();
+    var posts = postRepository.findUserbyId();
+    return posts.stream().map( p-> fromPost(p)).collect(Collectors.toList());
+}
+
+public void simulateBackEndCall(){
+    try{
+        System.out.println("---------- Going to Sleep for 5 seconds ------------------");
+        Thread.sleep( 5 * 1000);
+
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+
     }
 }
