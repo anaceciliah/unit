@@ -29,7 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-/*
+
         try {
             var token = this.recoverToken(request);
             if (token != null) {
@@ -45,7 +45,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Unauthorized: " + e.getMessage());
-        } */
+        }
     }
 
     public String recoverToken(HttpServletRequest request) {

@@ -26,10 +26,10 @@ public class User {
     @Column (length = Constants.GENERAL_MAX_LENGTH, nullable = false, unique = true)
     private String email;
 
-    @Column (length = Constants.PHOTO_PATH, nullable = true)
+    @Column (length = Constants.PHOTO_PATH)
     private String photo;
 
-    @Column (length = Constants.MESSAGE_LENGTH, nullable = true)
+    @Column (length = Constants.MESSAGE_LENGTH)
     private String message;
 
     @Column

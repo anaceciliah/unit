@@ -2,6 +2,7 @@ package unit.br.unitnetwork.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,11 +56,11 @@ public class UserController {
         return new ResponseEntity<>(userFriendService.register(userFriendRequestDto), HttpStatus.CREATED);
     }
 
-    @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<UserResponseDto> register (
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UserResponseDto> register(
             @RequestPart("user") UserRequestDto user,
-            @RequestPart(value = "photo", required = false)MultipartFile photo){
-        return new ResponseEntity<>(userService.register(user,photo), HttpStatus.CREATED);
+            @RequestPart(value = "photo", required = false) MultipartFile photo) {
+        return new ResponseEntity<>(userService.register(user, photo), HttpStatus.CREATED);
     }
 
 
